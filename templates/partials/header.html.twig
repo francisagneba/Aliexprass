@@ -14,9 +14,9 @@
                     <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                         <div class="lng_dropdown mr-2">
                             <select name="countries" class="custome_select">
-                                <option value='en' data-image="assets/images/eng.png" data-title="English">English</option>
-                                <option value='fn' data-image="assets/images/fn.png" data-title="France">France</option>
-                                <option value='us' data-image="assets/images/us.png" data-title="United States">United States</option>
+                                <option value='en' data-image="/assets/images/eng.png" data-title="English">English</option>
+                                <option value='fn' data-image="/assets/images/fn.png" data-title="France">France</option>
+                                <option value='us' data-image="/assets/images/us.png" data-title="United States">United States</option>
                             </select>
                         </div>
                         <div class="mr-3">
@@ -37,6 +37,7 @@
                             <li><a href=""><i class="ti-control-shuffle"></i><span>Compare</span></a></li>
                             <li><a href=""><i class="ti-heart"></i><span>Wishlist</span></a></li>
                             {% if app.user %}
+                                <li><a href="{{ path("app_account")}}"><i class="ti-user"></i><span>Account</span></a></li>
                                 <li><a href="{{ path("app_logout")}}"><i class="ti-user"></i><span>Logout</span></a></li>
                             {% else %}
                                 <li><a href="{{ path("app_login")}}"><i class="ti-user"></i><span>Login</span></a></li>
@@ -52,8 +53,8 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg"> 
                 <a class="navbar-brand" href="">
-                    <img class="logo_light" src="assets/images/logo_light.png" alt="logo" />
-                    <img class="logo_dark" src="assets/images/logo_dark.png" alt="logo" />
+                    <img class="logo_light" src="/assets/images/logo_light.png" alt="logo" />
+                    <img class="logo_dark" src="/assets/images/logo_dark.png" alt="logo" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-expanded="false"> 
                     <span class="ion-android-menu"></span>

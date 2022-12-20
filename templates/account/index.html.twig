@@ -32,12 +32,13 @@
             </div>
             <div class="col-lg-9 col-md-8">
 
-                    <div class="alert alert-success alert-dismissible fade show" role="alert"> message flash
+                {% for message in app.flashes('address_message') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert"> {{message}}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                          </button>
+                        </button>
                     </div>
-
+                {% endfor %}
 
                 <div class="tab-content dashboard_content">
                       <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
@@ -92,36 +93,38 @@
                     <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                         <div class="row">
                             <div class="col-lg-12">
-                                <a href="" class="btn btn-fill-out mb-3">Add new address</a>
+                                <a href="{{path('app_address_new')}}" class="btn btn-fill-out mb-3">Add new address</a>
                             </div>
                         </div>
                         <div class="row">
-
-
-                            <div class="col-lg-6">
-                                <div class="card mb-3 mb-lg-0">
-                                    <div class="card-header">
-                                        <h3> Your Address # 1 </h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <address> firstname lastname<br>
-                                            25 Rue symfony <br>
-                                            App n°10 <br>
-                                            Paris <br>
-                                            75000<br>
-                                            France
-
-                                        </address>
-                                        <div class="btn-group">
-                                            <a href="" class="btn btn-success">Edit</a>
-                                            <a href="" class="btn btn-success">Delete</a>
-
+                           {% if app.user.addresses %}
+                               {% set index=0 %}
+                               {% for address in app.user.addresses %}
+                                   {% set index= index+1 %}
+                                   <div class="col-lg-6">
+                                        <div class="card mb-3 mb-lg-0">
+                                            <div class="card-header">
+                                                <h3> Your Address # {{ index }} </h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <address> {{ address.fullname }} <br>
+                                                    {{ address.address }}<br>
+                                                    {{ address.complement }} <br>
+                                                    {{ address.city }} <br>
+                                                    {{ address.codePostal }}<br>
+                                                    {{ address.country }}
+                                                </address>
+                                                <div class="btn-group">
+                                                    <a href="{{path('app_address_edit', {'id':address.id})}}" class="btn btn-success">Edit</a>
+                                                    {{ include('address/_delete_form.html.twig')}}
+                                                </div>
+                                            </div>
                                         </div>
-
                                     </div>
-                                </div>
-                            </div>
-
+                               {% endfor %}
+                           {% else %}
+                              <p>Sorry you haven't added an address to your account yet !</p>
+                           {% endif %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">

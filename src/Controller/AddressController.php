@@ -45,7 +45,9 @@ class AddressController extends AbstractController
             $address->setUser($user);
             $addressRepository->add($address, true);
 
-            return $this->redirectToRoute('app_address_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('address_message', 'Your address has been saved');
+
+            return $this->redirectToRoute('app_account', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('address/new.html.twig', [
@@ -57,12 +59,12 @@ class AddressController extends AbstractController
     /**
      * @Route("/{id}", name="app_address_show", methods={"GET"})
      */
-    public function show(Address $address): Response
-    {
-        return $this->render('address/show.html.twig', [
-            'address' => $address,
-        ]);
-    }
+    //public function show(Address $address): Response
+    //{
+        //return $this->render('address/show.html.twig', [
+           // 'address' => $address,
+        //]);
+   // }
 
     /**
      * @Route("/{id}/edit", name="app_address_edit", methods={"GET", "POST"})
@@ -75,7 +77,9 @@ class AddressController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $addressRepository->add($address, true);
 
-            return $this->redirectToRoute('app_address_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('address_message', 'Your address has been edited');
+
+            return $this->redirectToRoute('app_account', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('address/edit.html.twig', [
@@ -91,8 +95,10 @@ class AddressController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$address->getId(), $request->request->get('_token'))) {
             $addressRepository->remove($address, true);
+
+            $this->addFlash('address_message', 'Your address has been deleted');
         }
 
-        return $this->redirectToRoute('app_address_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_account', [], Response::HTTP_SEE_OTHER);
     }
 }
