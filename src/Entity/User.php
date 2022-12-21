@@ -64,9 +64,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $addresses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ReviewsProduct::class, mappedBy="user")
+     */
+    private $reviewsProducts;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
+        $this->reviewsProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -225,6 +231,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($address->getUser() === $this) {
                 $address->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewsProduct>
+     */
+    public function getReviewsProducts(): Collection
+    {
+        return $this->reviewsProducts;
+    }
+
+    public function addReviewsProduct(ReviewsProduct $reviewsProduct): self
+    {
+        if (!$this->reviewsProducts->contains($reviewsProduct)) {
+            $this->reviewsProducts[] = $reviewsProduct;
+            $reviewsProduct->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReviewsProduct(ReviewsProduct $reviewsProduct): self
+    {
+        if ($this->reviewsProducts->removeElement($reviewsProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($reviewsProduct->getUser() === $this) {
+                $reviewsProduct->setUser(null);
             }
         }
 
