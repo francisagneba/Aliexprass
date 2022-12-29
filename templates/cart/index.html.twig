@@ -83,11 +83,11 @@
                                     </tr>
                                     <tr>
                                         <td class="cart_total_label">Taxe (20%)</td>
-                                        <td class="cart_total_amount">${{ subTotal * 0.2 }}</td>
+                                        <td class="cart_total_amount">${{ (subTotal * 0.2) | round(2, 'floor') }}</td>
                                     </tr>
                                     <tr>
                                         <td class="cart_total_label">Total TTC</td>
-                                        <td class="cart_total_amount"><strong>${{ subTotal * 1.2 }}</strong></td>
+                                        <td class="cart_total_amount"><strong>${{ (subTotal * 1.2) | round(2, 'floor') }}</strong></td>
                                     </tr>
                                 </tbody>
                             </table>

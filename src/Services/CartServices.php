@@ -74,6 +74,7 @@ class CartServices{
 
     public function updateCart($cart){
         $this->session->set('cart', $cart);
+        $this->session->set('cartData', $this->getFullCart());
     }
 
     public function getCart(){
