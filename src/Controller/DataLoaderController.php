@@ -58,7 +58,7 @@ class DataLoaderController extends AbstractController
             $products[] = $product;
         }
 
-        $manager->flush();
+        //$manager->flush();
 
         return $this->json([
             'message' => 'Welcome to your new controller!',
