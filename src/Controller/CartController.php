@@ -25,7 +25,7 @@ class CartController extends AbstractController
         $cart = $this->cartServices->getFullCart();
 
         //Si le panier est vide , on redirige vers home
-        if(!$cart){
+        if(!isset($cart['products'])){
             return $this->redirectToRoute("app_home");
         }
         
