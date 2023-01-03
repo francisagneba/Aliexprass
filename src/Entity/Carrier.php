@@ -112,4 +112,13 @@ class Carrier
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $result = $this->name."[spr]";
+        $result .= $this->description."[spr]";
+        $result .= "Price: $" .($this->price/100)."[spr]";
+
+        return $result;
+    }
 }

@@ -122,7 +122,7 @@
                                      </ul>
                                     <div class="cart_footer">
                                         <p class="cart_total"><strong>Subtotal TTC:</strong> <span class="cart_price"> <span class="price_symbole">$</span></span>{{ app.session.get('cartData').data.subTotalTTC }}</p>
-                                        <p class="cart_buttons"><a href="{{ path('app_cart') }}" class="btn btn-fill-line rounded-0 view-cart">View Cart</a><a href="#" class="btn btn-fill-out rounded-0 checkout">Checkout</a></p>
+                                        <p class="cart_buttons"><a href="{{ path('app_cart') }}" class="btn btn-fill-line rounded-0 view-cart">View Cart</a><a href="{{ path('app_checkout')}}" class="btn btn-fill-out rounded-0 checkout">Checkout</a></p>
                                     </div>
                                 {% else %}
                                     <ul>

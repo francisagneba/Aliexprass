@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Address;
 use App\Form\AddressType;
 use App\Repository\AddressRepository;
+use App\Services\CartServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class AddressController extends AbstractController
     /**
      * @Route("/new", name="app_address_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, AddressRepository $addressRepository): Response
+    public function new(Request $request, AddressRepository $addressRepository, CartServices $cartServices): Response
     {
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
@@ -44,6 +45,11 @@ class AddressController extends AbstractController
             $user = $this->getUser(); //Cette ligne nous recupère l'utilisateur qui est connecté
             $address->setUser($user);
             $addressRepository->add($address, true);
+
+            //On verifie si son panier contient desproduits? si oui on le dirige vers checkout
+            if ($cartServices->getFullCart()) {
+                return $this->redirectToRoute('app_checkout'); 
+            }
 
             $this->addFlash('address_message', 'Your address has been saved');
 
