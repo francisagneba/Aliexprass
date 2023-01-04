@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Address;
 use App\Form\AddressType;
-use App\Repository\AddressRepository;
 use App\Services\CartServices;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\AddressRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 //Nous allons preciser que pour acceder à la route /address, l'utilisateur doit etre obligatoirement 
 //connecté, comme ça on pourra le récuperer avant de soumettre le formulaire de son adresse.
@@ -21,6 +22,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AddressController extends AbstractController
 {
+    private $cartServices;
+    private $session;
+
+    public function __construct(CartServices $cartServices, SessionInterface $session)
+    {
+        $this->cartServices = $cartServices;
+        $this->session = $session;
+    }
+    
     /**
      * @Route("/", name="app_address_index", methods={"GET"})
      */
@@ -82,6 +92,19 @@ class AddressController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $addressRepository->add($address, true);
+            
+            //si la session est definit
+            if ($this->session->get('checkout_data')) {
+
+                // On recupére la session
+                $data = $this->session->get('checkout_data');
+                //On modifie l'adresse qu'on a à l'intérieur 
+                $data['address'] = $address;
+                //On fait la mise à jour de la session
+                $this->session->set('checkout_data', $data);
+
+                return $this->redirectToRoute('app_checkout_confirm');
+            }
 
             $this->addFlash('address_message', 'Your address has been edited');
 
