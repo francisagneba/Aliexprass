@@ -4,32 +4,37 @@
 
 {% block body %}
 
-{{ include("partials/title_section.html.twig", {'name':'Checkout'})}}
+{{ include("partials/title_section.html.twig", {'name':'Confirm'})}}
 
 <div class="section">
 	<div class="container">
-        {{ form_start(checkout,{action: path('app_checkout_confirm')}) }}
+        
         <div class="row">
         	<div class="col-md-6">
                 <div class="heading_s1">
-                        <h4>Your delivery Address</h4>
-                        <div class="content">
-                            {{ form_widget(checkout.address) | replace({'[spr]': '<br>'}) | raw }}
+                        <h4>Please, verify your delivery Address</h4>
+                        <div class="content" id="address">
+                            {{ address | replace({'[spr]': '<br>'}) | raw }}
+                            <a href="{{ path('app_address_edit',{'id':address.id})}}" class="btn btn-fill-out mt-1">Edit address</a>
+                            <a href="{{ path('app_checkout')}}" class="btn btn-fill-out mt-1">Change address</a>
                         </div>
-                        <a href="{{ path('app_address_new')}}" class="btn btn-fill-out btn-block mt-1">Add new address</a>
                 </div>
                 <div class="heading_s1">
-                    <h4>Your carrier</h4>
-                    <div class="content">
-                       {{ form_widget(checkout.carrier) | replace({'[spr]': '<br>'}) | raw}}
+                    <h4>Please, verify your carrier</h4>
+                    <div class="content" id="carrier">
+                       {{ carrier | replace({'[spr]': '<br>'}) | raw}}
+                       <a href="{{ path('app_checkout')}}" class="btn btn-fill-out mt-1">Change carrier</a>
                     </div>
                 </div>
-                <div class="heading_s1">
-                    <h4>Additional information</h4>
-                    <div class="form-group mb-0">
-                        {{ form_widget(checkout.informations)}}
+                {% if informations %}
+                    <div class="heading_s1">
+                        <h4>Please, verify your additional information</h4>
+                        <div class="form-group mb-0" id="informations">
+                            {{ informations }}
+                        </div>
                     </div>
-                </div>
+                {% endif %}
+                
           </div>
 
           <div class="col-md-6">
@@ -63,8 +68,12 @@
                                     <td class="product-subtotal">${{ cart.data.taxe }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Carrier ({{carrier.name}})</th>
+                                    <td class="product-subtotal">${{ carrier.price/100 }}</td>
+                                </tr>
+                                <tr>
                                     <th>Total TTC</th>
-                                    <td class="product-subtotal">${{ cart.data.subTotalTTC }}</td>
+                                    <td class="product-subtotal">${{ cart.data.subTotalTTC + carrier.price/100 }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -73,13 +82,13 @@
                         <div class="heading_s1">
                             <h4>Payment</h4>
                         </div>
-
+                        <button type="submit" id="checkout-button" class="btn btn-fill-out btn-block">Paid | ${{ cart.data.subTotalTTC + carrier.price/100 }}</button>
                     </div>
-                    <button type="submit" id="checkout-button" class="btn btn-fill-out btn-block">Place Order</button>
+                    
                 </div>
           </div>
         </div>
-        {{ form_end(checkout)}}
+        
     </div>
 </div>
 
