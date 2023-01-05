@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderDetailsRepository;
+use App\Repository\CartDetailsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=OrderDetailsRepository::class)
+ * @ORM\Entity(repositoryClass=CartDetailsRepository::class)
  */
-class OrderDetails
+class CartDetails
 {
     /**
      * @ORM\Id
@@ -48,10 +48,10 @@ class OrderDetails
     private $subTotalTTC;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="OrderDetails")
+     * @ORM\ManyToOne(targetEntity=Cart::class, inversedBy="CartDetails")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Orders;
+    private $Carts;
 
     public function getId(): ?int
     {
@@ -130,14 +130,14 @@ class OrderDetails
         return $this;
     }
 
-    public function getOrders(): ?Order
+    public function getCarts(): ?Cart
     {
-        return $this->Orders;
+        return $this->Carts;
     }
 
-    public function setOrders(?Order $Orders): self
+    public function setCarts(?Cart $Carts): self
     {
-        $this->Orders = $Orders;
+        $this->Carts = $Carts;
 
         return $this;
     }
