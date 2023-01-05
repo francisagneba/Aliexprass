@@ -18,9 +18,12 @@ class OrderServices{
         $this->manager = $manager;
     }
 
+    // Cette methode cree une commande, cela consiste a enregistrer la commende dans la DB
     public function createOrder($cart){
-
+        
+        //on initialise l'ordre ou la commande
         $order = new Order();
+        //Ensuite on va prendre les attribute de l'order ou commande
         $order->setReference($cart->getReference)
               ->setCarrierName($cart->getCarrierName())
               ->setCarrierPrice($cart->getCarrierPrice())
@@ -34,10 +37,15 @@ class OrderServices{
               ->setUser($cart->getUser())
               ->setcreatedAt($cart->getCreatedAt());
         $this->manager->persist($order); 
-        
-        $products = $cart->getCartDetails()->getValues();
 
+        //après ça on recupère les details de la commande
+        //on recupère les information sur le detail du panier
+        $products = $cart->getCartDetails()->getValues();
+        
+        //en faisant une boucle on a la valeur de chaque details dans $productet on le
+        // fait passer dans $cart_product
         foreach ($products as $cart_product) {
+            //on initialise le detail de la commande en créeant une Instance de la classe
             $orderDetails = new OrderDetails();
             $orderDetails->setOrders($order)
                          ->setProductName($cart_product->getProductName())
@@ -48,7 +56,8 @@ class OrderServices{
                          ->setTaxe($cart_product->getTaxe());
             $this->manager->persist($orderDetails);
         }
-
+        
+        //Après avoir envoyer cela dans la base de donnée on fait un Return de la commande
         $this->manager->flush();
 
         return $order;
