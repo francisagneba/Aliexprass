@@ -116,7 +116,8 @@ class CheckoutController extends AbstractController
                 'cart' => $cart,
                 'address' => $address,
                 'carrier' => $carrier,
-                'informations' => $informations, 
+                'informations' => $informations,
+                'reference' => $reference, 
                 'checkout' => $form->createView()
     
             ]);

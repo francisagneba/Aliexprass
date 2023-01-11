@@ -5,6 +5,7 @@ use App\Entity\Cart;
 use App\Entity\Order;
 use App\Entity\CartDetails;
 use App\Entity\OrderDetails;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -12,10 +13,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class OrderServices{
 
     private $manager;
+    private $repoProduct;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager , ProductRepository $repoProduct)
     {
         $this->manager = $manager;
+        $this->repoProduct = $repoProduct;
     }
 
     // Cette methode cree une commande, cela consiste a enregistrer la commende dans la DB
@@ -24,7 +27,7 @@ class OrderServices{
         //on initialise l'ordre ou la commande
         $order = new Order();
         //Ensuite on va prendre les attribute de l'order ou commande
-        $order->setReference($cart->getReference)
+        $order->setReference($cart->getReference())
               ->setCarrierName($cart->getCarrierName())
               ->setCarrierPrice($cart->getCarrierPrice())
               ->setFullName($cart->getFullName())
@@ -61,6 +64,59 @@ class OrderServices{
         $this->manager->flush();
 
         return $order;
+
+    }
+
+    public function getLineItems($cart){
+        $cartDetails = $cart->getCartDetails();
+
+        $line_items = [];
+        foreach ($cartDetails as $details) {
+            $product = $this->repoProduct->findOneByName($details->getProductName());
+
+            $line_items[] = [
+                # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+                'price_data' => [
+                  'currency' => 'usd',
+                  'unit_amount' => $product->getPrice(),
+                  'product_data' => [
+                    'name' => $product->getName(),
+                    'images' => [$_ENV['YOUR_DOMAIN'].'/uploads/products/'.$product->getImage()],
+                  ]
+                ],
+                'quantity' => $details->getQuantity(),
+               ];
+        }
+
+        //Carrier
+        $line_items[] = [
+            # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+            'price_data' => [
+              'currency' => 'usd',
+              'unit_amount' => $cart->getCarrierPrice()*100,
+              'product_data' => [
+                'name' => 'Carrier ( '.$cart->getCarrierName().')',
+                'images' => [$_ENV['YOUR_DOMAIN'].'/uploads/products/'],
+              ]
+            ],
+            'quantity' => 1,
+        ];
+
+        //taxe
+        $line_items[] = [
+            # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+            'price_data' => [
+              'currency' => 'usd',
+              'unit_amount' => $cart->getTaxe()*100,
+              'product_data' => [
+                'name' => 'TVA (20%)',
+                'images' => [$_ENV['YOUR_DOMAIN'].'/uploads/products/'],
+              ]
+            ],
+            'quantity' => 1,
+        ];
+
+           return $line_items;
 
     }
 

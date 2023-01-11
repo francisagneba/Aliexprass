@@ -100,11 +100,11 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        var stripe = Stripe('pk_test_51MN4BGLy6alHPRbUzfY8svnFNCWaKq6cHSCrQZeTWnrYvxOpUt5LaST54y4y1RpKCLg5MxUlGdJd6RcoV942wZSX00D1GfuoU0');
+        var stripe = Stripe('pk_test_51Ju2k8CRBuwdGxzZS77vfODp0QiM7iJ244ItQxjOg7QOwtQL0eDGjET8wnQax9CkQIrJyVyyVix0C9h32PyZ5y0K00JHwICaws');
         var checkoutButton = document.getElementById("checkout-button");
 
         checkoutButton.addEventListener("click", function(){
-            fetch("/create-checkout-session",{
+            fetch("/create-checkout-session/{{ reference }}",{
                 method: "POST",
             })
               .then(function(response){
