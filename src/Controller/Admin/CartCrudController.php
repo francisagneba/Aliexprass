@@ -17,11 +17,11 @@ class CartCrudController extends AbstractCrudController
         return Cart::class;
     }
 
-     //Pour afficher les commandes par la plus recente 
-     public function configureCrud(Crud $crud): Crud
-     {
-         return $crud->setDefaultSort(['id'=>'DESC']);
-     }
+    //Pour afficher les commandes par la plus recente 
+    public function configureCrud(Crud $crud): Crud
+    {
+       return $crud->setDefaultSort(['id'=>'DESC']);
+    }
 
     
     public function configureFields(string $pageName): iterable
