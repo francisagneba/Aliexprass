@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Carrier;
 use App\Entity\Categories;
 use App\Entity\Product;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +16,7 @@ class DataLoaderController extends AbstractController
     /**
      * @Route("/data", name="app_data_loader")
      */
-    public function index(EntityManagerInterface $manager): JsonResponse
+    public function index(EntityManagerInterface $manager, UserRepository $repoUser): JsonResponse
     {
         //On recupère le fichier en sortant 2 fois puisse qu'on est dans AliExprass/src/conttroller
         //Alors que le fichier est à laracine du projet c'est à dire dans AliExprass
@@ -35,9 +37,21 @@ class DataLoaderController extends AbstractController
             $category = new Categories();
             $category->setName($data_category[1])
                      ->setImage($data_category[3]);
-            $manager->persist($category);
+            //$manager->persist($category);
             $categories[] = $category;
         }
+
+        /*$carriers =[];
+
+        foreach ($data_carriers as $data_carrier) {
+            $carrier = new Carrier();
+            $carrier->setName($data_carrier[1])
+                     ->setDescription($data_carrier[2])
+                     ->setPrice($data_carrier[3]);
+            //$manager->persist($category);
+            $carriers[] = $carrier;
+        }*/
+
 
 
         foreach ($data_products as $data_Product) {
@@ -54,9 +68,12 @@ class DataLoaderController extends AbstractController
                     ->setTags($data_Product[12])
                     ->setSlug($data_Product[13])
                     ->setCreatedAt(new \DateTimeImmutable());
-            $manager->persist($product);
+            //$manager->persist($product);
             $products[] = $product;
         }
+        
+       // $user = $repoUser->find(1);
+       // $user->setRoles(['ROLE_ADMIN']);
 
        // $manager->flush();
 
