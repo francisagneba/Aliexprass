@@ -7,6 +7,8 @@ use App\Entity\Order;
 use App\Entity\Carrier;
 use App\Entity\Product;
 use App\Entity\Categories;
+use App\Entity\Contact;
+use App\Entity\HomeSlider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -41,5 +43,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Cart', 'fas fa-shopping-cart', Cart::class);
         yield MenuItem::linkToCrud('Categories', 'fas fa-list', Categories::class);
         yield MenuItem::linkToCrud('Carrier', 'fas fa-truck', Carrier::class);
+        yield MenuItem::linkToCrud('Home Slider', 'fas fa-images', HomeSlider::class);
+        yield MenuItem::linkToCrud('Contact', 'fas fa-envelope', Contact::class);
     }
 }

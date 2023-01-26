@@ -4,7 +4,11 @@
 
 {% block body %}
 
-{{ include("partials/title_section.html.twig", {'name':'Home Page'})}}
+{% if homeSlider %}
+    {{ include("partials/home_slider.html.twig", {'slider':'homeSlider'})}}  
+{% else %}
+    {{ include("partials/title_section.html.twig", {'name':'Home Page'})}}
+{% endif %}
 
 <div class="container">
     <div class="section small_pt pb_70">
