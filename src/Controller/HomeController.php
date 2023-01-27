@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\SearchProductType;
 use App\Repository\HomeSliderRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,10 +61,12 @@ class HomeController extends AbstractController
     {
         $products = $repoProduct->findAll();
 
-       // dd($productFeatured);
+        $form = $this->createForm(SearchProductType::class, null);
+
         return $this->render('home/shop.html.twig', [
           
             'products' => $products,
+            'search' => $form->createView()
 
         ]);
     }
