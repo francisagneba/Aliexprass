@@ -52,4 +52,19 @@ class HomeController extends AbstractController
             'product' => $product,
         ]);
     }
+
+    /**
+     * @Route("/shope", name="app_shope")
+     */
+    public function shop(ProductRepository $repoProduct): Response
+    {
+        $products = $repoProduct->findAll();
+
+       // dd($productFeatured);
+        return $this->render('home/shop.html.twig', [
+          
+            'products' => $products,
+
+        ]);
+    }
 }
