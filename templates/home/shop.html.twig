@@ -11,6 +11,10 @@
     	<div class="row">
 			<div class="col-lg-9">
                 <div class="row shop_container">
+                    {% if not products %}
+                        <p class="m-5">Sorry. No product matches your search results !</p>
+                    {% endif %}
+                    
                     {% for product in products %}
                         {{ include('partials/product.html.twig',{'product': product})}}
                     {% endfor %}
@@ -51,10 +55,10 @@
 
 {% endblock body %}
 
-{% block javascript %}
+ {% block javascripts %}
    <script>
       $(document).ready(function(){
         $('.js-categories-multiple').select2();
       });
-   </script>
-{% endblock %}
+   </script>       
+ {% endblock %}
